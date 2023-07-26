@@ -10,3 +10,5 @@ Vérif/installation/activation de Hyper-V.
 
 Toutes les copies d'écran sont dans le chat Teams.
 Enfin ça fonctionne, il est 10h30...
+
+Antoine C.
