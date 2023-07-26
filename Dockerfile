@@ -1,13 +1,18 @@
-FROM ubuntu:latest
-FROM node:18
-FROM mongo:6.0.6
-FROM redis:latest
-FROM nginx:latest
+# On utilise l'image Jenkins officielle disponible sur Docker Hub comme base
+FROM jenkins/jenkins:lts
 
-LABEL maintainer="contact@loicguillois.fr"
+# On utilise l'utilisateur "root" pour pouvoir installer des packages
+USER root
 
-RUN apt-get update
-RUN apt-get install -y git-core
-RUN apt-get install -y openssh-client
+# On met à jour le système et on installe les packages nécessaires
+RUN apt-get update && apt-get upgrade -y && apt-get install -y git curl
 
-RUN echo "hello world" > hello.txt
+# On repasse à l'utilisateur jenkins pour la suite
+USER jenkins
+
+# On installe les plugins Jenkins que l'on souhaite utiliser
+COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+
+# On expose le port 8080 pour accéder à l'interface Jenkins depuis l'extérieur du conteneur
+EXPOSE 8080
